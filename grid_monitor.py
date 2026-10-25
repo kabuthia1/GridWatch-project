@@ -7,7 +7,6 @@ import urllib.parse
 # ==========================================
 BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 CHAT_ID = "YOUR_CHAT_ID_HERE"
-
 # 2. NODE IPS & THRESHOLDS
 # ==========================================
 NODES = {
@@ -38,18 +37,28 @@ def read(url):
                 return float(text)
         except Exception:
             time.sleep(1)
-    return 0.0 
+    return None 
 
 def send_telegram_alert(message):
-    """Sends a message to your Telegram phone."""
+    """Sends a message to your Telegram phone, with a retry mechanism."""
     encoded_msg = urllib.parse.quote(message)
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={CHAT_ID}&text={encoded_msg}&parse_mode=Markdown"
-    try:
-        urllib.request.urlopen(url, timeout=20)
-        print("📱 Telegram alert sent successfully!")
-    except Exception as e:
-        print("Failed to send Telegram alert:", e)
-
+    
+    max_retries = 5
+    for attempt in range(max_retries):
+        try:
+            urllib.request.urlopen(url, timeout=15)
+            print("📱 Telegram alert sent successfully!")
+            return True # Success! Exit the function
+        except Exception as e:
+            print(f"⚠️ Attempt {attempt + 1} failed: {e}")
+            if attempt < max_retries - 1:
+                print("Retrying in 5 seconds...")
+                time.sleep(5) # Wait 5 seconds before trying again
+            else:
+                print("❌ CRITICAL: Failed to send Telegram alert after 5 attempts.")
+    
+    return False
 # ==========================================
 # 4. MAIN LOGIC
 # ==========================================
@@ -97,6 +106,7 @@ def check():
         NORMAL_BASELINE_V = None 
         return
 
+    # --- E. Check for Line Fault ---
         # --- E. Check for Line Fault ---
     # We rely ONLY on the current sensors for fault detection.
     is_fault = (n1 > NODE1_HIGH) and (n2 < NODE2_LOW)
