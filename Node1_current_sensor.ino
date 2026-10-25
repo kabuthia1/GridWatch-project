@@ -24,7 +24,7 @@ float readCurrentA() {
 
 void setup() {
   Serial.begin(115200);
-  IPAddress local_IP(192, 168, 10, 104); // NODE 1 IS .105
+  IPAddress local_IP(192, 168, 10, 105); // NODE 1 IS .105
   IPAddress gateway(192, 168, 10, 1);
   IPAddress subnet(255, 255, 255, 0);
 
