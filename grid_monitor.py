@@ -74,7 +74,7 @@ def check():
     v = read(NODES["gateway"])
 
     # --- A. Check for Disconnected Nodes ---
-    if n1 == 0.0 or n2 == 0.0 or v == 0.0:
+   if n1 is None or n2 is None or v is None or n1 == 0.0 or n2 == 0.0 or v == 0.0:
         print("!!! ERROR: NODE DISCONNECTED OR TIMEOUT !!!")
         fault_count = 0
         try:
