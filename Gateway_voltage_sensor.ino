@@ -1,7 +1,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-const char* ssid = "Drey";
+const char* ssid = "WIFI_PASSWORD";
 const char* password = "YOUR_PASSWORD"; // Change this to your real password on your laptop
 
 WebServer server(80);
