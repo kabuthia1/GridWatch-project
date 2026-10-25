@@ -105,8 +105,6 @@ def check():
         fault_alert_sent = False 
         NORMAL_BASELINE_V = None 
         return
-
-    # --- E. Check for Line Fault ---
         # --- E. Check for Line Fault ---
     # We rely ONLY on the current sensors for fault detection.
     is_fault = (n1 > NODE1_HIGH) and (n2 < NODE2_LOW)
